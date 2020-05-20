@@ -1,0 +1,7 @@
+ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: v1
+      CacheClusterEnabled: true
+      CacheClusterSize: "0.5"
+      DefinitionUri: "swagger.yaml"
