@@ -2,7 +2,7 @@ swagger: "2.0"
 info:
   description: "This is a sample Petstore rest API to demonstrate integration between Swagger (a.k.a. OpenAPI) and AWS API Gateway."
   version: "1.0.0"
-  title: "Pet Store Service"
+  title: "Pet Store Services"
 host: "petstore.com"
 basePath: "/v1"
 schemes:
