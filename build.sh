@@ -5,20 +5,20 @@
 #export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 
 export AWS_DEFAULT_REGION=ap-south-1
-export STACK=$NODE_ENV-Test-API-Gateway
+export STACK=$1-Test-API-Gateway
 
 
 # Replace the <NODE_ENV> with the real value
 
 #sed -i=' ' "s/<NODE_ENV>/$NODE_ENV/g" swagger.yaml
-sed -i=' ' "s/<NODE_ENV>/$NODE_ENV/g" template.yaml
+sed -i=' ' "s/<NODE_ENV>/$1/g" template.yaml
 
 
 # Give the name of your deployment bucket name
 
-export BUCKET="api-gateway-$NODE_EVN"
+export BUCKET="api-gateway-$1"
 
-#aws s3 mb s3://$BUCKET
+aws s3 mb s3://$BUCKET
 
 # Uploads files to S3 bucket and creates CloudFormation template
 sam package --template-file template.yaml --s3-bucket $BUCKET --output-template-file package.yaml
