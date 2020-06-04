@@ -5,6 +5,8 @@ pipeline {
   agent any
   environment {
     NODE_ENV = 'dev'
+    URL="https://$NODE_ENV-server.udchalo.com"
+    URL_USER="https://users-$NODE_ENV-api.udchalo.com"
   }
   stages {
     stage('Build preparations') {
@@ -31,6 +33,8 @@ pipeline {
 		  echo 'git_branch:' + env.GIT_BRANCH
 	     BUCKET="deploy-api-$NODE_ENV"
 	     STACK="Test-API-Gateway-$NODE_ENV"
+	      echo $URL
+	      echo $URL_USER
         }
       }
     }
