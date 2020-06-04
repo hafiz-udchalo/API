@@ -29,6 +29,8 @@ pipeline {
           // set the build display name
           currentBuild.displayName = "#${BUILD_ID}-${VERSION}"
 		  echo 'git_branch:' + env.GIT_BRANCH
+	     BUCKET="deploy-api-$NODE_ENV"
+	     STACK="Test-API-Gateway-$NODE_ENV"
         }
       }
     }
@@ -36,7 +38,9 @@ pipeline {
       steps {
         script {
           sh "chmod +x -R ${env.WORKSPACE}/build.sh"
-		  sh "./build.sh $NODE_ENV"
+	  sh "./build.sh $NODE_ENV"
+	  sh "sam package --template-file template.yaml --s3-bucket $BUCKET --output-template-file package.yaml"
+	  sh "sam deploy --template-file package.yaml --stack-name $STACK --capabilities CAPABILITY_IAM"
         }
       }
     }
