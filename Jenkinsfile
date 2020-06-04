@@ -30,7 +30,7 @@ pipeline {
 	    script {
 	       sh "aws s3 mb s3://$BUCKET"
 	       sh "chmod +x -R ${env.WORKSPACE}/build.sh"
-	       sh "./build.sh $NODE_ENV"
+	       
 		}
 	  }
     }
