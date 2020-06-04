@@ -3,9 +3,9 @@ pipeline {
       buildDiscarder(logRotator(numToKeepStr: '3'))
   }
   agent any
+  }
   environment {
-    VERSION = 'latest'
-    NODE_ENV = 'dev'
+    NODE_ENV = 'prod'
   }
   stages {
     stage('Checkout SCM') {
@@ -22,9 +22,16 @@ pipeline {
           IMAGE = "$PROJECT:$VERSION"
 
           echo 'git_branch:' + env.GIT_BRANCH
-
-          
+ 
         }
       }
     }
- }
+	stage('Deploy Step')
+	  steps {
+	    script{
+		  sh 'buil.sh'
+		}
+	  }
+  
+  }
+}
