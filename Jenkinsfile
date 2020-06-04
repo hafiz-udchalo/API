@@ -26,7 +26,7 @@ pipeline {
     stage('Deploy Step') {
 	  steps {
 	    script {
-	       sh "chmod +x -R ${env.WORKSPACE}"
+	       sh "chmod +x -R ${env.WORKSPACE}/build.sh"
 	       sh "./build.sh $NODE_ENV"
 		}
 	  }
