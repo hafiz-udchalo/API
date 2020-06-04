@@ -7,5 +7,5 @@ Resources:
   PetStoreApiGateway: 
     Type: AWS::Serverless::Api
     Properties:
-      StageName: <NODE_ENV
+      StageName: <NODE_ENV>
       DefinitionUri: ./swagger.yaml
