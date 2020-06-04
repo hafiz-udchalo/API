@@ -36,7 +36,7 @@ pipeline {
       steps {
         script {
           sh "chmod +x -R ${env.WORKSPACE}/build.sh"
-	  sh "./build.sh $NODE_ENV"
+		  sh "./build.sh $NODE_ENV"
         }
       }
     }
