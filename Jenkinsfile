@@ -39,8 +39,6 @@ pipeline {
         script {
           sh "chmod +x -R ${env.WORKSPACE}/build.sh"
 	  sh "./build.sh $NODE_ENV"
-	  sh "sam package --template-file template.yaml --s3-bucket $BUCKET --output-template-file package.yaml"
-	  sh "sam deploy --template-file package.yaml --stack-name $STACK --capabilities CAPABILITY_IAM"
         }
       }
     }
