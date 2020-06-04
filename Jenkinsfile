@@ -5,6 +5,7 @@ pipeline {
   agent any
   environment {
      NODE_ENV = 'prod'
+     BUCKET = 'api-gateway-$NODE_ENV'  
   }
   stages {
     stage('Checkout SCM') {
@@ -23,9 +24,11 @@ pipeline {
         }
       }
     }
+
     stage('Deploy Step') {
 	  steps {
 	    script {
+	       sh "aws s3 mb s3://$BUCKET"
 	       sh "chmod +x -R ${env.WORKSPACE}/build.sh"
 	       sh "./build.sh $NODE_ENV"
 		}
