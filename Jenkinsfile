@@ -33,8 +33,8 @@ pipeline {
 		  echo 'git_branch:' + env.GIT_BRANCH
 	     BUCKET="deploy-api-$NODE_ENV"
 	     STACK="Test-API-Gateway-$NODE_ENV"
-	      echo $URL
-	      echo $URL_USER
+	      sh "echo $URL"
+	      sh "echo $URL_USER"
         }
       }
     }
