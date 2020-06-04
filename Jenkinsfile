@@ -24,12 +24,11 @@ pipeline {
         }
       }
     }
-	stage('Deploy Step')
+    stage('Deploy Step')
 	  steps {
 	    script{
-		  sh 'buil.sh $NODE_ENV'
+	       sh 'buil.sh $NODE_ENV'
 		}
 	  }
-  
-  }
+    }
 }
