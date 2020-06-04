@@ -29,6 +29,6 @@ export BUCKET="api-gateway-$1"
 
 
 # Delete CloudFormation Stack
-#aws cloudformation delete-stack --stack-name $STACK
+aws cloudformation delete-stack --stack-name $STACK
 
 # Delete non-empty bucket
