@@ -2,8 +2,6 @@ pipeline {
   options {
       buildDiscarder(logRotator(numToKeepStr: '3'))
   }
-  agent any
-  }
   environment {
     NODE_ENV = 'prod'
   }
@@ -29,7 +27,7 @@ pipeline {
 	stage('Deploy Step')
 	  steps {
 	    script{
-		  sh 'buil.sh'
+		  sh 'buil.sh $NODE_ENV'
 		}
 	  }
   
