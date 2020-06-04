@@ -2,8 +2,9 @@ pipeline {
   options {
       buildDiscarder(logRotator(numToKeepStr: '3'))
   }
+  agent any
   environment {
-    NODE_ENV = 'prod'
+     NODE_ENV = 'prod'
   }
   stages {
     stage('Checkout SCM') {
@@ -24,11 +25,12 @@ pipeline {
         }
       }
     }
-    stage('Deploy Step')
+    stage('Deploy Step') {
 	  steps {
-	    script{
+	    script {
 	       sh 'buil.sh $NODE_ENV'
 		}
 	  }
     }
+  }
 }
