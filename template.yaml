@@ -1,14 +1,15 @@
 AWSTemplateFormatVersion : "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: Serverless API Gateway
-Globals:
-  Api:
-    OpenApiVersion: 3.0.1
+#Globals:
+  #Api:
+    #OpenApiVersion: 3.0.1
 Resources:
   ApiGateway<NODE_ENV>:
     Type: AWS::Serverless::Api
     Properties:
       StageName: <NODE_ENV>
+      OpenApiVersion: "2.0"
       DefinitionUri: ./swagger.yaml
 #Outputs:
  # ApiGateway<NODE_ENV>:
