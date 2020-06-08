@@ -1,116 +1,181 @@
-swagger: "2.0"
-info:
-  description: "This is a sample Petstore rest API to demonstrate integration between Swagger (a.k.a. OpenAPI) and AWS API Gateway."
-  version: "1.0.0"
-  title: "Pet Store Services"
-host: "petstore.com"
-basePath: "/v2"
-schemes:
-- "https"
-paths:
-  /pet:
-    post:
-      tags:
-      - "pet"
-      summary: "Add a new pet to the store"
-      description: ""
-      operationId: "addPet"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Pet object that needs to be added to the store"
-        required: true
-        schema:
-          $ref: "#/definitions/Pet"
-      responses:
-        200:
-          description: "Success"
-        400:
-          description: "Bad Request"
-        401:
-          description: "Unauthorized"
-        500:
-          description: "Internal Server Error"
-      # For AWS Integration
-      x-amazon-apigateway-request-validators:
-        basic:
-          validateRequestParameters: true
-      x-amazon-apigateway-integration:
-        type: "aws"
-        httpMethod: "POST"
-        # Replace AWS_REGION and ACCOUNT_ID in uri
-        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:110258746085:function:PostPetFunction/invocations"
-        responses:
-          default:
-            statusCode: 200
-        requestTemplates:
-          application/json: "{\r\n  \"method\": \"$context.httpMethod\",\r\n  \"body\" : \"$input.body\",\r\n  \"headers\": {\r\n    #foreach($param in $input.params().header.keySet())\r\n    \"$param\": \"$util.escapeJavaScript($input.params().header.get($param))\" #if($foreach.hasNext),#end\r\n\r\n    #end\r\n  },\r\n  \"queryParams\": {\r\n    #foreach($param in $input.params().querystring.keySet())\r\n    \"$param\": \"$util.escapeJavaScript($input.params().querystring.get($param))\" #if($foreach.hasNext),#end\r\n\r\n    #end\r\n  },\r\n  \"pathParams\": {\r\n    #foreach($param in $input.params().path.keySet())\r\n    \"$param\": \"$util.escapeJavaScript($input.params().path.get($param))\" #if($foreach.hasNext),#end\r\n\r\n    #end\r\n  }  \r\n}"
-  /pet/{petId}:
-    get:
-      tags:
-      - "pet"
-      summary: "Find pet by ID"
-      description: "Returns a single pet"
-      operationId: "getPetById"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet to return"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        200:
-          description: "Success"
-          schema:
-            $ref: "#/definitions/Pet"
-        400:
-          description: "Bad Request"
-        401:
-          description: "Unauthorized"
-        404:
-          description: "Not Found"
-        500:
-          description: "Internal Server Error"
-      # For AWS Integration
-      x-amazon-apigateway-request-validators:
-        basic:
-          validateRequestParameters: true
-      x-amazon-apigateway-integration:
-        type: "aws"
-        httpMethod: "POST"
-        # Replace AWS_REGION and ACCOUNT_ID in uri
-        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:110258746085:function:GetPetFunction/invocations"
-        responses:
-          default:
-            statusCode: 200
-        requestTemplates:
-          application/json: "{\r\n  \"method\": \"$context.httpMethod\",\r\n  \"body\" : \"$input.body\",\r\n  \"headers\": {\r\n    #foreach($param in $input.params().header.keySet())\r\n    \"$param\": \"$util.escapeJavaScript($input.params().header.get($param))\" #if($foreach.hasNext),#end\r\n\r\n    #end\r\n  },\r\n  \"queryParams\": {\r\n    #foreach($param in $input.params().querystring.keySet())\r\n    \"$param\": \"$util.escapeJavaScript($input.params().querystring.get($param))\" #if($foreach.hasNext),#end\r\n\r\n    #end\r\n  },\r\n  \"pathParams\": {\r\n    #foreach($param in $input.params().path.keySet())\r\n    \"$param\": \"$util.escapeJavaScript($input.params().path.get($param))\" #if($foreach.hasNext),#end\r\n\r\n    #end\r\n  }  \r\n}"
-definitions:
-  Pet:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      name:
-        type: "string"
-      type:
-        type: "string"  
-      sub-type:
-        type: "string"
-      photoUrl:
-        type: "string"
-      status:
-        type: "string"
-        description: "Pet status in the store"
-        enum:
-        - "available"
-        - "pending"
-        - "sold"
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Test Serverless API",
+    "title": "<NODE_ENV>-api-gateway-proxy"
+  },
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/user/login": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {},
+        "x-amazon-apigateway-integration": {
+          "passthroughBehavior": "WHEN_NO_MATCH",
+          "type": "HTTP_PROXY",
+          "httpMethod": "POST",
+          "uri":"<USER_URL>/login"
+        }
+      }
+    },
+    "/api/user/profile": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {},
+        "x-amazon-apigateway-integration": {
+          "passthroughBehavior": "WHEN_NO_MATCH",
+          "type": "HTTP_PROXY",
+          "httpMethod": "GET",
+          "uri":"<USER_URL>/profile"
+        }
+      }
+    },
+    "/api/user/getProfile": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {},
+        "x-amazon-apigateway-integration": {
+          "passthroughBehavior": "WHEN_NO_MATCH",
+          "type": "HTTP_PROXY",
+          "httpMethod": "GET",
+          "uri":"<DOMAIN_URL>/api/user/getProfile"
+        }
+      }
+    },
+    "/api/user/updateProfile": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {},
+        "x-amazon-apigateway-integration": {
+          "passthroughBehavior": "WHEN_NO_MATCH",
+          "type": "HTTP_PROXY",
+          "httpMethod": "POST",
+          "uri":"<DOMAIN_URL>/api/user/updateProfile"
+        }
+      }
+    },
+    "/api/user/updatePassword": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {},
+        "x-amazon-apigateway-integration": {
+          "passthroughBehavior": "WHEN_NO_MATCH",
+          "type": "HTTP_PROXY",
+          "httpMethod": "POST",
+          "uri":"<DOMAIN_URL>/api/user/updatePassword"
+        }
+      }
+    },
+    "/api/user/updatePasswordViaForgotLink": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {},
+        "x-amazon-apigateway-integration": {
+          "passthroughBehavior": "WHEN_NO_MATCH",
+          "type": "HTTP_PROXY",
+          "httpMethod": "POST",
+          "uri":"<DOMAIN_URL>/api/user/updatePasswordViaForgotLink"
+        }
+      }
+    },
+    "/api/user/updateProfilePic": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {},
+        "x-amazon-apigateway-integration": {
+          "passthroughBehavior": "WHEN_NO_MATCH",
+          "type": "HTTP_PROXY",
+          "httpMethod": "POST",
+          "uri":"<DOMAIN_URL>/api/user/updateProfilePic"
+        }
+      }
+    },
+    "/api/user/updateSettings": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {},
+        "x-amazon-apigateway-integration": {
+          "passthroughBehavior": "WHEN_NO_MATCH",
+          "type": "HTTP_PROXY",
+          "httpMethod": "POST",
+          "uri":"<DOMAIN_URL>/api/user/updateSettings"
+        }
+      }
+    },
+    "/api/user/forgotPassword": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {},
+        "x-amazon-apigateway-integration": {
+          "passthroughBehavior": "WHEN_NO_MATCH",
+          "type": "HTTP_PROXY",
+          "httpMethod": "POST",
+          "uri":"<DOMAIN_URL>/api/user/forgotPassword"
+        }
+      }
+    },
+    "/api/user/verifyPasswordResetLink": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {},
+        "x-amazon-apigateway-integration": {
+          "passthroughBehavior": "WHEN_NO_MATCH",
+          "type": "HTTP_PROXY",
+          "httpMethod": "POST",
+          "uri":"<DOMAIN_URL>/api/user/verifyPasswordResetLink"
+        }
+      }
+    },
+    "/api/cancellations/listRefundModes/{bookingId}/{flightId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "requestParameters": {
+           "integration.request.path.bookingId": "method.request.path.bookingId",
+           "integration.request.path.flightId": "method.request.path.flightId"
+        },
+        "responses": {},
+        "x-amazon-apigateway-integration": {
+          "passthroughBehavior": "WHEN_NO_MATCH",
+          "type": "HTTP_PROXY",
+          "httpMethod": "GET",
+          "uri":"<DOMAIN_URL>/api/cancellations/listRefundModes/{bookingId}/{flightId}"
+        }
+      }
+    },
+    "/{proxy+}": {
+      "x-amazon-apigateway-any-method": {
+        "description": "Test API",
+        "x-amazon-apigateway-integration": {
+          "passthroughBehavior": "WHEN_NO_MATCH",
+          "type": "HTTP_PROXY",
+          "httpMethod": "ANY",
+          "uri":"https://<NODE_ENV>-server-admin.udchalo.com"
+        }
+      }
+    }
+  }
+}
